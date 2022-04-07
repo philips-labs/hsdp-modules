@@ -1,4 +1,4 @@
-# Useful modules an examples for HSP
+# Useful modules and examples for HSP
 
 ## Terraform modules
 
