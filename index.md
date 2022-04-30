@@ -35,6 +35,7 @@
 
 - [Cloud foundry examples](https://github.com/philips-labs/cloudfoundry-examples)
 - [API Gateway demo](https://github.com/philips-labs/terraform-cloudfoundry-gwdemo)
+- [Over-the-Air Device Firmware Update example](https://github.com/philips-internal/iot-device-management)
  
 ## Github Actions
 
