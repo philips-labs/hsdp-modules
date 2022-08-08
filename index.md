@@ -1,5 +1,8 @@
 # Useful modules and examples for HSP
 
+Disclaimer: The modules and projects listed here are **not managed service offerings** from HSP, therefore please do **not** open
+ ServiceNow tickets if you encounter issues. Instead, raise a Github issue on the respective project. The community is pretty responsive.
+
 ## Terraform modules
 
 ### Platform service onboarding modules
