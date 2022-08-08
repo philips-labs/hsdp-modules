@@ -39,3 +39,9 @@
 ## Github Actions
 
 - [IAM Service Login](https://github.com/philips-labs/iam-service-login)
+
+## HSDP Function Tasks
+
+- [HTTP Requests](https://github.com/loafoe/hsdp-task-http-request)
+- [Redshift Queries](https://github.com/loafoe/hsdp-task-redshift)
+- [S3 Bucket mirroring](https://github.com/loafoe/hsdp-task-s3mirror)
