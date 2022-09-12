@@ -48,3 +48,8 @@ Disclaimer: The modules and projects listed here are **not managed service offer
 - [HTTP Requests](https://github.com/loafoe/hsdp-task-http-request)
 - [Redshift Queries](https://github.com/loafoe/hsdp-task-redshift)
 - [S3 Bucket mirroring](https://github.com/loafoe/hsdp-task-s3mirror)
+
+## Kong custom plugins
+
+- [Kong IAM introspect plugin](https://github.com/loafoe/kong-plugin-introspect)
+- [Kong IAM token injector plugin based on mTLS certificates](https://github.com/loafoe/kong-plugin-mtlsauth)
