@@ -29,7 +29,7 @@ Following on-boarding shall be done in your HSP account
 1. [HSP AI Inference](https://www.hsdp.io/documentation/ai-inference)
 2. [HSP CDR](https://www.hsdp.io/documentation/clinical-data-repository) [Optional]
 
-## Step1: Building your own container
+## Building your own algorithm container
 
 This container is created based on a suggested folder structure in AWS SageMaker example.
 <img src="./images/aws_sm_01.png" align="center">
@@ -57,7 +57,7 @@ To run the container as inference program,
 For more details about, how Amazon SageMaker runs the container, refer
 this [blog](https://aws.amazon.com/blogs/machine-learning/train-and-host-scikit-learn-models-in-amazon-sagemaker-by-building-a-scikit-docker-container/)
 
-### About training algorithm
+### About this training algorithm
 
 Heart disease prediction follows supervised learning approach by looking at 3 vitals, `Heart Rate`
 , `Systolic Blood Pressure` and `Diastolic Blood Pressure`. The training data (heart.csv) includes sample measurements
@@ -90,7 +90,7 @@ predictions. After successful prediction, score will be returned in `JSON` forma
 
 You can fork and change the implementation for API endpoints according to your need.
 
-### Build and push
+## Build and push
 
 Assuming you have installed Docker and AWS CLI, add `.aws` folder to your home path (if not done already) in your local
 machine as follows:
@@ -106,7 +106,7 @@ After you configure AWS CLI with HSP provided credentials in your local machine,
 
 **NOTE:** Name of the image MUST start with `sagemaker-`, if you need to use the image in HSP AI inference service
 
-## Testing in local machine
+### Testing in Local machine
 
 In order to test the model locally, follow the steps to train and test the algorithm
 
@@ -135,7 +135,7 @@ In order to test the model locally, follow the steps to train and test the algor
 
 **WARNING:** `.pkl` file generated in Mac with Apple chip does not work as expected. Damn Apple!
 
-## Testing using HSP AI Inference
+### Testing using HSP AI Inference
 
 If the model is working as expected locally, let's try pushing the same model to HSP and run inference through HSP AI
 inference services
