@@ -6,14 +6,14 @@ environment using HSP AI inference service.
 In this example, you will accomplish the following goals:
 
 - How to build your own algorithm container?
-- Uploading your algorithm for use with SageMaker
+- Uploading your algorithm for use with SageMaker via HSP AI inference service
 - Train the model in local machine
-- Hosting your trained model using HSP
+- Hosting your trained model using HSP AI inference APIs
 - Create an endpoint for prediction
-- Test inference using processed FHIR patient data
+- Test inference using processed FHIR patient data from HSP CDR
 
-**Note:** This sample is created by following one of the AWS SageMaker
-example: [Building your own algorithm container](https://github.com/aws/amazon-sagemaker-examples/blob/main/advanced_functionality/scikit_bring_your_own/scikit_bring_your_own.ipynb)
+**Note:** This sample is created by followin one of the AWS SageMaker
+example as reference template: [Building your own algorithm container](https://github.com/aws/amazon-sagemaker-examples/blob/main/advanced_functionality/scikit_bring_your_own/scikit_bring_your_own.ipynb)
 
 ## Prerequisites
 
