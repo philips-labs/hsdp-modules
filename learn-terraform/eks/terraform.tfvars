@@ -1,0 +1,6 @@
+pg_admin_pwd      = "your-pg-password"
+pg_repl_admin_pwd = "your-pg-password"
+registry_username = "your-docker-username"
+registry_password = "your-docker-password"
+registry_email    = "your-docker-email"
+registry_server   = "docker.na1.hsdp.io"
