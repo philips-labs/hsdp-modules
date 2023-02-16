@@ -1,0 +1,17 @@
+---
+applications:
+  - name: hsp-cfenv-sample
+    path: ./target/hsp-cfenv-sample-1.0.0-RELEASE.jar
+    instances: 1
+    memory: 1G
+    buildpacks:
+      - java_buildpack
+    random-route: true
+    stack: cflinuxfs3
+    env:
+      SPRING_PROFILES_ACTIVE: cloud
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+}}'
+    services:
+      - vaultdemo
+      - psqldemo
+
