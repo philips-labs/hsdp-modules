@@ -11,8 +11,8 @@
 	<groupId>com.example</groupId>
 	<artifactId>hsp-cfenv-sample</artifactId>
 	<version>1.0.0-RELEASE</version>
-	<name>hsp-cfenv-sample</name>
-	<description>hsp-cfenv-sample</description>
+	<name>hsp-cfenv-app</name>
+	<description>HSP CloudFoundry VCAP Usage Sample</description>
 	<properties>
 		<java.version>17</java.version>
 		<log4j.version>2.17.1</log4j.version>

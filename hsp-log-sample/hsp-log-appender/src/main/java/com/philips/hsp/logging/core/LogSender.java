@@ -28,7 +28,6 @@ public class LogSender {
 
     private static final DateTimeFormatter SIGNED_DATE_FORMAT = DateTimeFormat
             .forPattern("yyyy-MM-dd'T'HH:mm:ssZ");
-    private static final String HMAC_SHA_256 = "HmacSHA256";
     private static final String HEADER_API_VERSION = "API-Version";
     private static final String HEADER_SIGNED_DATE = "SignedDate";
     private static final String HEADER_HSDP_API_SIGNATURE = "HSDP-API-Signature";

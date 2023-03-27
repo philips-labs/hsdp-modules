@@ -1,6 +1,7 @@
 package com.philips.hsp.logging.log4j;
 
 import com.philips.hsp.logging.core.LogCredentials;
+import com.philips.hsp.logging.core.LogProcessor;
 import io.avaje.inject.BeanScope;
 import org.apache.logging.log4j.core.*;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
@@ -90,8 +91,8 @@ public class HspLogAppender extends AbstractAppender {
 
     @Override
     public void append(LogEvent event) {
-//        LogProcessor logProcessor = beanScope.get(LogProcessor.class);
-//        final byte[] bytes = getLayout().toByteArray(event);
-//        logProcessor.process(event, bytes);
+        LogProcessor logProcessor = beanScope.get(LogProcessor.class);
+        final byte[] bytes = getLayout().toByteArray(event);
+        logProcessor.process(event, bytes);
     }
 }

@@ -20,7 +20,7 @@ import java.util.concurrent.*;
 public class LogProcessor {
 
     private final LogSender sender;
-    private final ExecutorService executorService = Executors.newWorkStealingPool();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final BlockingQueue<Entry> queue = new LinkedBlockingQueue<>();
     private QueueProcessor processor;
     private volatile boolean isStarted = false;

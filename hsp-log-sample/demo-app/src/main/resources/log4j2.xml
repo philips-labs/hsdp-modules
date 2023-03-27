@@ -6,10 +6,10 @@
             <PatternLayout pattern="%d{ISO8601} [%t] %highlight{%-5p %X{id} %X{traceId} %X{spanId} %c{1.}.%M:%L - %msg%n%ex{separator(\u2028)}}" />
         </Console>
         <HspLogAppender name="HspLogAppender"
-                        productKey="<your-product-key>"
-                        sharedKey="<your-shared-key>"
-                        secretKey="<your-secret-key>"
-                        logIngestUrl="<your-ingest-url> eg: https://logingestor2-client-test.us-east.philips-healthsuite.com/core/log/LogEvent"
+                        productKey="product-key"
+                        sharedKey="your-shared-key"
+                        secretKey="your-secret-key"
+                        logIngestUrl="https://logingestor2-client-test.us-east.philips-healthsuite.com/core/log/LogEvent"
                         applicationName="${project.name}"
                         applicationVersion="${project.version}"
                         serviceName="${project.artifactId}"
