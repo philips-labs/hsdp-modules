@@ -1,0 +1,15 @@
+---
+applications:
+  - name: hspredisdemo
+    path: ./build/libs/hsp-redis-sample-0.0.1-SNAPSHOT.jar
+    instances: 1
+    memory: 500M
+    random-route: true
+    buildpacks:
+      - java_buildpack
+    stack: cflinuxfs4
+    env:
+      SPRING_PROFILES_ACTIVE: cloud
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+}}'
+      JAVA_OPTS: '-Xss500K -XX:MaxMetaspaceSize=100M'
+      JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'

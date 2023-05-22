@@ -16,8 +16,11 @@ public class Main {
         try {
             ThreadContext.put("organization", "hspsandbox");
             log.info("Sample Hello World! " + RandomGenerator.getDefault().nextInt());
+            Thread.sleep(6000);
         } catch (ServiceConfigurationError er) {
             System.out.println("Service configuration error: " + er.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         ThreadContext.clearAll();
         LogManager.shutdown();

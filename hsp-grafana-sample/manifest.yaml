@@ -1,0 +1,14 @@
+---
+applications:
+  - name: hspgrafanasample
+    instances: 1
+    memory: 1G
+    random-route: true
+    health-check-type: process
+    env:
+      SPRING_PROFILES_ACTIVE: cloud
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+}}'
+      JAVA_OPTS: '-Xss500K -XX:MaxMetaspaceSize=100M'
+    docker:
+      image: docker.na1.hsdp.io/demo/hspgrafanasample:v1.0.0
+      username: your-username
