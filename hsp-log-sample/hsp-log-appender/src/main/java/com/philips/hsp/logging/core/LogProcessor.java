@@ -3,8 +3,6 @@ package com.philips.hsp.logging.core;
 import com.philips.hsp.logging.core.model.Entry;
 import com.philips.hsp.logging.core.model.LogData;
 import com.philips.hsp.logging.core.model.LogEntry;
-import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.core.LogEvent;
 import org.joda.time.DateTime;
@@ -12,21 +10,25 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import java.util.*;
 import java.util.concurrent.*;
 
 @Log4j2
-@Singleton
 public class LogProcessor {
 
-    private final LogSender sender;
+    LogSender sender;
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
     private final BlockingQueue<Entry> queue = new LinkedBlockingQueue<>();
     private QueueProcessor processor;
     private volatile boolean isStarted = false;
 
-    public LogProcessor(LogSender logSender) {
-        this.sender = logSender;
+    @Inject
+    public LogProcessor(LogSender sender) {
+        this.sender = sender;
+        isStarted = true;
+        processor = new QueueProcessor();
+        processor.start();
     }
 
     @PostConstruct

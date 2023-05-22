@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.philips.hsp</groupId>
         <artifactId>hsp-audit-sample</artifactId>
-        <version>1.0.0-RELEASE</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>com.philips.hsp.audit</groupId>
@@ -18,10 +18,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <avaje.inject.version>8.12-RC2</avaje.inject.version>
-        <lombok.version>1.18.24</lombok.version>
-        <httpclient.version>4.5.14</httpclient.version>
-        <jackson.version>2.14.0</jackson.version>
+        <lombok.version>1.18.26</lombok.version>
+        <httpclient.version>5.2.1</httpclient.version>
+        <jackson.version>2.14.2</jackson.version>
         <hapi-fhir.version>6.4.3</hapi-fhir.version>
+        <dagger.version>2.45</dagger.version>
     </properties>
 
     <dependencies>
@@ -42,13 +43,19 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.dagger</groupId>
+            <artifactId>dagger</artifactId>
+            <version>${dagger.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
             <version>${httpclient.version}</version>
         </dependency>
         <dependency>
@@ -62,4 +69,28 @@
             <version>2.10.1</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.dagger</groupId>
+                            <artifactId>dagger-compiler</artifactId>
+                            <version>${dagger.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

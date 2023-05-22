@@ -1,31 +1,24 @@
 package com.philips.hsp.logging.core;
 
-import io.avaje.inject.InjectModule;
-import jakarta.inject.Singleton;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-@Singleton
 public class LogApiSigning {
 
     private static final String API_SIGNATURE_FORMAT = "HmacSHA256;Credential:%s;SignedHeaders:SignedDate;Signature:%s";
     private static final String SECRET_KEY_PREFIX = "DHPWS";
-    private final String sharedKey;
-    private final String secretKey;
-    private final String algorithm;
+    LogProperties properties;
 
-    @InjectModule(requires = {String.class, String.class, String.class})
-    public LogApiSigning(String sharedKey, String secretKey, String algorithm) {
-        this.sharedKey = sharedKey;
-        this.secretKey = secretKey;
-        this.algorithm = algorithm;
+    @Inject
+    public LogApiSigning(LogProperties logProperties) {
+        this.properties = logProperties;
     }
-
     public String getSignature(String signedDate) {
-        return createApiSignature(signedDate, sharedKey, secretKey, algorithm);
+        return createApiSignature(signedDate,
+                properties.getSharedKey(), properties.getSecretKey(), properties.getAlgorithm());
     }
 
     private String createApiSignature(final String signedDate, String sharedKey, String secretKey, String algorithm) {

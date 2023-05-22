@@ -1,6 +1,5 @@
 package com.philips.hsp.audit.core;
 
-import jakarta.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,18 +21,20 @@ public class AuditProperties {
     private String componentName;
     private String serverName;
 
-    public AuditProperties(Map<String, String> properties) {
-        this.productKey = properties.get("productKey");
-        this.tenant = properties.get("tenant");
-        this.applicationName = properties.get("applicationName");
-        this.applicationVersion = properties.get("applicationVersion");
-        this.applicationInstance = properties.getOrDefault("applicationInstance", "1");
-        this.serverName = properties.getOrDefault("serverName", "na");
-        this.serviceName = properties.getOrDefault("serviceName", "na");
-        this.componentName = properties.getOrDefault("componentName", "na");
-        this.sharedKey = properties.get("sharedKey");
-        this.secretKey = properties.get("secretKey");
-        this.auditUrl = properties.get("auditUrl");
+    public AuditProperties() {}
+
+    public void init(Map<String, String> kvProps) {
+        this.productKey = kvProps.get("productKey");
+        this.tenant = kvProps.get("tenant");
+        this.applicationName = kvProps.get("applicationName");
+        this.applicationVersion = kvProps.get("applicationVersion");
+        this.applicationInstance = kvProps.getOrDefault("applicationInstance", "1");
+        this.serverName = kvProps.getOrDefault("serverName", "na");
+        this.serviceName = kvProps.getOrDefault("serviceName", "na");
+        this.componentName = kvProps.getOrDefault("componentName", "na");
+        this.sharedKey = kvProps.get("sharedKey");
+        this.secretKey = kvProps.get("secretKey");
+        this.auditUrl = kvProps.get("auditUrl");
     }
 
     public String getAlgorithm() {

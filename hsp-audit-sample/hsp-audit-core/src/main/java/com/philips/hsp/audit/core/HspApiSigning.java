@@ -1,30 +1,25 @@
 package com.philips.hsp.audit.core;
 
-import io.avaje.inject.InjectModule;
-import jakarta.inject.Singleton;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-@Singleton
 public class HspApiSigning {
     private static final String API_SIGNATURE_FORMAT = "HmacSHA256;Credential:%s;SignedHeaders:SignedDate;Signature:%s";
     private static final String SECRET_KEY_PREFIX = "DHPWS";
-    private final String sharedKey;
-    private final String secretKey;
-    private final String algorithm;
+    AuditProperties properties;
 
-    @InjectModule(requires = {AuditProperties.class})
-    public HspApiSigning(AuditProperties properties) {
-        this.sharedKey = properties.getSharedKey();
-        this.secretKey = properties.getSecretKey();
-        this.algorithm = properties.getAlgorithm();
+    @Inject
+    public HspApiSigning(AuditProperties auditProperties) {
+        this.properties = auditProperties;
     }
-
     public String getSignature(String signedDate) {
-        return createApiSignature(signedDate, sharedKey, secretKey, algorithm);
+        return createApiSignature(signedDate,
+                properties.getSharedKey(),
+                properties.getSecretKey(),
+                properties.getAlgorithm());
     }
 
     private String createApiSignature(final String signedDate, String sharedKey, String secretKey, String algorithm) {

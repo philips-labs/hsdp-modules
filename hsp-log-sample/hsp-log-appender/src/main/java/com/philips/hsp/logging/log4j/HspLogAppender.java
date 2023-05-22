@@ -1,8 +1,8 @@
 package com.philips.hsp.logging.log4j;
 
-import com.philips.hsp.logging.core.LogCredentials;
+import com.philips.hsp.logging.core.DaggerLogClientComponent;
+import com.philips.hsp.logging.core.LogModule;
 import com.philips.hsp.logging.core.LogProcessor;
-import io.avaje.inject.BeanScope;
 import org.apache.logging.log4j.core.*;
 import org.apache.logging.log4j.core.appender.AbstractAppender;
 import org.apache.logging.log4j.core.config.Property;
@@ -26,22 +26,19 @@ import java.util.stream.Collectors;
         elementType = Appender.ELEMENT_TYPE)
 public class HspLogAppender extends AbstractAppender {
 
-    private final BeanScope beanScope;
+    private LogProcessor logProcessor;
 
     protected HspLogAppender(String name, Filter filter, Layout<? extends Serializable> layout, boolean ignoreExceptions, Property[] properties) {
         super(name, filter, layout, ignoreExceptions, properties);
         Map<String, String> kvPairs = Arrays.stream(getPropertyArray())
                 .filter(e -> !e.getRawValue().isEmpty())
                 .collect(Collectors.toMap(Property::getName, Property::getRawValue));
-        this.beanScope = BeanScope.builder()
-                .bean(LogCredentials.class,
-                new LogCredentials(kvPairs))
-                .shutdownHook(true).build();
+        logProcessor = DaggerLogClientComponent.builder()
+                .logModule(new LogModule(kvPairs)).build().logProcessor();
     }
 
     @Override
     public boolean stop(final long timeout, final TimeUnit timeUnit) {
-        beanScope.close();
         this.setStopped();
         return true;
     }
@@ -91,7 +88,6 @@ public class HspLogAppender extends AbstractAppender {
 
     @Override
     public void append(LogEvent event) {
-        LogProcessor logProcessor = beanScope.get(LogProcessor.class);
         final byte[] bytes = getLayout().toByteArray(event);
         logProcessor.process(event, bytes);
     }

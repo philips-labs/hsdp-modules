@@ -3,28 +3,17 @@ package com.philips.hsp.audit.core;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.model.api.ExtensionDt;
 import ca.uhn.fhir.model.dstu2.resource.AuditEvent;
-import ca.uhn.fhir.model.dstu2.valueset.AuditEventSourceTypeEnum;
 import ca.uhn.fhir.model.primitive.StringDt;
-import ca.uhn.fhir.parser.JsonParser;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.cfg.DatatypeFeature;
-import com.google.gson.Gson;
-import io.avaje.inject.PreDestroy;
-import jakarta.inject.Singleton;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 
-import java.io.IOException;
+import javax.inject.Inject;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Singleton
 public class AuditClient {
     private static final DateTimeFormatter SIGNED_DATE_FORMAT = DateTimeFormatter.ISO_INSTANT;
     private static final String AUDIT_API_VER = "2";
@@ -42,21 +30,14 @@ public class AuditClient {
     private static final String AUDIT_BASE_PATH = "/core/audit/AuditEvent";
     private final FhirContext fhirContext = FhirContext.forDstu2();
 
-    private final HspApiSigning apiSigning;
-    private final AuditProperties properties;
-    private final ObjectMapper mapper = new ObjectMapper();
-    private final CloseableHttpClient httpClient = HttpClients.createSystem();
+    HspApiSigning apiSigning;
+    AuditProperties properties;
 
-    @PreDestroy
-    public void destroy() throws IOException {
-        httpClient.close();
-    }
-
-    public AuditClient(HspApiSigning apiSigning, AuditProperties properties) {
+    @Inject
+    public AuditClient(HspApiSigning apiSigning, AuditProperties auditProperties) {
         this.apiSigning = apiSigning;
-        this.properties = properties;
+        this.properties = auditProperties;
     }
-
     public void send(AuditEvent event) {
         try {
             sendInternal(buildAuditMessage(event));
@@ -74,20 +55,19 @@ public class AuditClient {
             post.addHeader(HEADER_API_VERSION, AUDIT_API_VER);
             post.addHeader(HEADER_SIGNED_DATE, signedDate);
             post.addHeader(HEADER_HSDP_API_SIGNATURE, signature);
-            HttpEntity body = new ByteArrayEntity(auditMessage.getBytes(StandardCharsets.UTF_8));
+            HttpEntity body = new ByteArrayEntity(auditMessage.getBytes(StandardCharsets.UTF_8),
+                    ContentType.APPLICATION_JSON);
             post.setEntity(body);
-            try (CloseableHttpResponse httpResponse = httpClient.execute(post)) {
-                int status = httpResponse.getStatusLine().getStatusCode();
+            httpClient.execute(post, response -> {
+                int status = response.getCode();
                 if ((status != 201) && (status != 200)) {
-                    System.out.printf("HSP Log HttpPost event failed, code=%d, message=%s%n",
-                            status, httpResponse.getStatusLine().getReasonPhrase());
+                    System.out.printf("HSP Audit HttpPost event failed, code=%d, message=%s%n",
+                            status, response.getReasonPhrase());
                 }
-            } catch (Exception ex) {
-                System.err.println("HSP Log HttpResponse error occurred: " + ex.getMessage());
-            }
-
+               return null;
+            });
         } catch (Exception ex) {
-            System.err.printf("HSP Log HttpClient error occurred: %s%n", ex.getMessage());
+            System.err.printf("HSP Audit HttpClient error occurred: %s%n", ex.getMessage());
         }
     }
 

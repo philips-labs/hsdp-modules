@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.philips.hsp</groupId>
         <artifactId>hsp-audit-sample</artifactId>
-        <version>1.0.0-RELEASE</version>
+        <version>1.0.0</version>
     </parent>
 
     <name>AuditDemoApp</name>
@@ -22,7 +22,13 @@
         <dependency>
             <groupId>com.philips.hsp.audit</groupId>
             <artifactId>hsp-audit-core</artifactId>
-            <version>1.0.0-RELEASE</version>
+            <version>${version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.philips.hsp.audit</groupId>
+            <artifactId>hsp-audit-core</artifactId>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

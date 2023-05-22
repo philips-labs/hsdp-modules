@@ -8,7 +8,9 @@ import ca.uhn.fhir.model.dstu2.valueset.AuditEventOutcomeEnum;
 import ca.uhn.fhir.model.dstu2.valueset.IdentifierTypeCodesEnum;
 import ca.uhn.fhir.model.dstu2.valueset.IdentifierUseEnum;
 import ca.uhn.fhir.model.primitive.InstantDt;
-import com.philips.hsp.audit.core.AuditBeanInitializer;
+import com.philips.hsp.audit.core.AuditClientComponent;
+import com.philips.hsp.audit.core.AuditModule;
+import com.philips.hsp.audit.core.DaggerAuditClientComponent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,8 +23,9 @@ public class Main {
         System.out.println("HSP audit test app");
         Main app = new Main();
         Map<String, String> kvProps = app.loadProperties();
-        AuditBeanInitializer beanInitializer = new AuditBeanInitializer(kvProps);
-        beanInitializer.auditClient().send(
+        AuditClientComponent auditClientComponent = DaggerAuditClientComponent.builder()
+                .auditModule(new AuditModule(kvProps)).build();
+        auditClientComponent.auditClient().send(
                 new AuditEvent()
                         .setEvent(
                              new AuditEvent.Event()
@@ -54,7 +57,6 @@ public class Main {
                                         .setName("ClientApp")
                         ))
         );
-        beanInitializer.close();
     }
 
     private Map<String, String> loadProperties() {

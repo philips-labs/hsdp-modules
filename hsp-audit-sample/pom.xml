@@ -6,7 +6,7 @@
 
     <groupId>com.philips.hsp</groupId>
     <artifactId>hsp-audit-sample</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>hsp-audit-core</module>

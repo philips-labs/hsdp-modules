@@ -3,10 +3,12 @@ package com.philips.hsp.logging.core;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.inject.Inject;
 import java.util.Map;
 
 @Getter @Setter
-public class LogCredentials {
+public class LogProperties {
+    private static final String ALGORITHM = "HmacSHA256";
     private String logIngestUrl;
     private String sharedKey;
     private String secretKey;
@@ -18,7 +20,9 @@ public class LogCredentials {
     private String category;
     private String serverName;
 
-    public LogCredentials(Map<String, String> properties) {
+    @Inject public LogProperties() {}
+
+    public void init(Map<String, String> properties) {
         this.productKey = properties.get("productKey");
         this.applicationName = properties.get("applicationName");
         this.applicationVersion = properties.get("applicationVersion");
@@ -29,5 +33,9 @@ public class LogCredentials {
         this.sharedKey = properties.get("sharedKey");
         this.secretKey = properties.get("secretKey");
         this.logIngestUrl = properties.get("logIngestUrl");
+    }
+
+    public String getAlgorithm() {
+        return ALGORITHM;
     }
 }

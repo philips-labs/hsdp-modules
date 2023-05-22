@@ -2,8 +2,10 @@ import ca.uhn.fhir.model.dstu2.composite.IdentifierDt;
 import ca.uhn.fhir.model.dstu2.resource.AuditEvent;
 import ca.uhn.fhir.model.dstu2.valueset.AuditEventActionEnum;
 import ca.uhn.fhir.model.dstu2.valueset.AuditEventOutcomeEnum;
-import com.philips.hsp.audit.core.AuditBeanInitializer;
 import com.philips.hsp.audit.core.AuditClient;
+import com.philips.hsp.audit.core.AuditClientComponent;
+import com.philips.hsp.audit.core.AuditModule;
+import com.philips.hsp.audit.core.DaggerAuditClientComponent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +16,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Audit core tryout...");
         Main app = new Main();
-        AuditBeanInitializer beanInitializer = new AuditBeanInitializer(app.loadProperties());
-        AuditClient client = beanInitializer.auditClient();
+        AuditClientComponent auditClientComponent = DaggerAuditClientComponent.builder()
+                .auditModule(new AuditModule(app.loadProperties())).build();
+        AuditClient client = auditClientComponent.auditClient();
         client.send(new AuditEvent()
                 .setEvent(
                         new AuditEvent.Event().setAction(AuditEventActionEnum.CREATE)

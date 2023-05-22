@@ -1,0 +1,50 @@
+integrations:
+  agent:
+    enabled: true
+    relabel_configs:
+    - action: replace
+      source_labels:
+      - agent_hostname
+      target_label: instance
+    - action: replace
+      target_label: job
+      replacement: "integrations/agent-check"
+    metric_relabel_configs:
+    - action: keep
+      regex: (prometheus_target_.*|prometheus_sd_discovered_targets|agent_build.*|agent_wal_samples_appended_total|process_start_time_seconds)
+      source_labels:
+      - __name__
+  prometheus_remote_write:
+  - basic_auth:
+      password: {GCLOUD_RW_API_KEY}
+      username: {GCLOUD_HOSTED_METRICS_ID}
+    url: {GCLOUD_HOSTED_METRICS_URL}
+logs:
+  configs:
+  - clients:
+    - basic_auth:
+        password: {GCLOUD_RW_API_KEY}
+        username: {GCLOUD_HOSTED_LOGS_ID}
+      url: {GCLOUD_HOSTED_LOGS_URL}
+    name: integrations
+    positions:
+      filename: /tmp/positions.yaml
+    scrape_configs:
+metrics:
+  configs:
+  - name: integrations
+    remote_write:
+    - basic_auth:
+        password: {GCLOUD_RW_API_KEY}
+        username: {GCLOUD_HOSTED_METRICS_ID}
+      url: {GCLOUD_HOSTED_METRICS_URL}
+    scrape_configs:
+      - job_name: integrations/hspdemo
+        metrics_path: '/api/prometheus'
+        scrape_interval: 10s  
+        scheme: http
+        static_configs:
+          - targets: ['{HSCLOUD_APP_HOST}:8080']
+  global:
+    scrape_interval: {GCLOUD_SCRAPE_INTERVAL}
+  wal_directory: /tmp/grafana-agent-wal
